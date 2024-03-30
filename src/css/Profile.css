@@ -1,0 +1,16 @@
+.profile {
+    background-color: #f0f6ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;   
+}
+
+.profile img {
+    width: 60px;
+    height: 60px;
+}
+
+.profile-name {
+    padding-top: 12px;
+}
