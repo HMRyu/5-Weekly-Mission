@@ -6,65 +6,57 @@ import CardList from "./Components/CardList";
 import Footer from "./Components/Footer";
 import { Route, Routes } from "react-router-dom";
 import Detail from "./Components/Detail";
+import Loading from "./Components/Loading";
 
 function App() {
-  const [user, setUser] = useState({
-    id: null,
-    name: null,
-    email: null,
-    profileImageSource: null,
-  });
+  const [user, setUser] = useState(null);
   const [folderData, setFolderData] = useState(null);
 
   const loadUserData = async () => {
-    let result;
+    const result = await fetchUserData();
 
-    try {
-      result = await fetchUserData();
-    } catch (error) {
-      console.error(error);
-      return;
-    }
+    return result;
+  }
 
-    const { id, name, email, profileImageSource } = result;
+  const loadFolderData = async () => {
+    const result = await fetchFolderData();
+    
+    return result;
+  }
 
-    setUser((p) => ({
+  useEffect(() => {
+    loadUserData()
+    .then((r) => {
+      const { id, name, email, profileImageSource } = r; 
+
+      setUser((p) => ({
         ...p,
         id: id,
         name: name,
         email: email,
         profileImageSource: profileImageSource,
-    }));
-  }
+      }));
+    })
+    .catch((e) => console.error(e));
 
-  const loadFolderData = async () => {
-    let result;
-  
-    try {
-      result = await fetchFolderData();
-    } catch(error) {
-      console.error(error);
-      return;
-    }
+    loadFolderData()
+    .then((r) => {
+      const { folder } = r;
 
-    const { folder }  = result;
-    setFolderData((p) => ({
-      ...p,
-      folder,
-    }));
-  }
-
-  useEffect(() => {
-    loadUserData();
-    loadFolderData();
+      setFolderData((p) => ({
+        ...p,
+        folder,
+      }));
+    })
+    .catch((e) => console.error(e));
   }, []);
 
   return (
     <>
-        <Navbar user={user} />
+        {user ? <Navbar user={user} /> : <Loading />}
         <Profile folderData={folderData} />
         <Routes>
-          <Route path="/" element={<CardList folderData={folderData} />}></Route>
+          <Route path="/" element={folderData ? <CardList folderData={folderData} /> : <Loading />}></Route>
           <Route path="/detail/:id" element={<Detail />}></Route>
         </Routes>
         <Footer />
