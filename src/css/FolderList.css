@@ -1,0 +1,61 @@
+.folderlist {
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.folderlist-btn-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.folderlist-btn-select button{
+    padding: 8px 12px;
+    margin-right: 5px;
+    border: 1px solid #6D6AFE;
+    background-color: #FFF;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.folderlist-add-btn {
+    background-color: #FFF;
+    border: none;
+    color: #6D6AFE;
+    cursor: pointer;
+}
+
+.folderlist-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.folderlist-btn-options {
+    display: flex;
+    align-items: center;
+}
+
+.folderlist-btn-options button {
+    border: none;
+    background-color: #FFF;
+    cursor: pointer;
+    color: #9FA6B2;
+}
+
+@media (max-width: 1124px) {
+    .folderlist {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+  
+@media (max-width: 768px) {
+    .folderlist {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}

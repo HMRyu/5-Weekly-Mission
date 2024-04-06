@@ -1,8 +1,8 @@
+import '../css/Footer.css';
 import { ReactComponent as FacebookImg } from '../img/facebook.svg';
 import { ReactComponent as InstagramImg } from '../img/instagram.svg';
 import { ReactComponent as TwitterImg } from '../img/twitter.svg';
 import { ReactComponent as YoutubeImg } from '../img/youtube.svg';
-import '../css/Footer.css';
 
 function Footer() {
     return (

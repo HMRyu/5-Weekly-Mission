@@ -1,63 +1,62 @@
-import Navbar from "./Components/Navbar";
 import { useEffect, useState } from "react";
-import { fetchFolderData, fetchUserData } from "./api";
-import Profile from "./Components/Profile";
-import CardList from "./Components/CardList";
-import Footer from "./Components/Footer";
 import { Route, Routes } from "react-router-dom";
+import { fetchFolderList, fetchUserData } from "./api";
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
 import Detail from "./Components/Detail";
 import Loading from "./Components/Loading";
+import Folder from "./Components/Folder";
+import Shared from "./Components/Shared";
 
 function App() {
+  const [id, setId] = useState(1);
   const [user, setUser] = useState(null);
-  const [folderData, setFolderData] = useState(null);
+  const [folderList, setFolderList] = useState([]);
 
   const loadUserData = async () => {
-    const result = await fetchUserData();
+    const result = await fetchUserData(id);
 
     return result;
   }
 
-  const loadFolderData = async () => {
-    const result = await fetchFolderData();
-    
+  const loadSortList = async () => {
+    const result = await fetchFolderList(id);
+
     return result;
   }
 
   useEffect(() => {
     loadUserData()
     .then((r) => {
-      const { id, name, email, profileImageSource } = r; 
-
-      setUser((p) => ({
+      const { id, name, email, image_source } = r.data[0];
+      setId((p) => ({
         ...p,
         id: id,
+      }))
+      setUser((p) => ({
+        ...p,
         name: name,
         email: email,
-        profileImageSource: profileImageSource,
+        image_source: image_source,
       }));
     })
     .catch((e) => console.error(e));
 
-    loadFolderData()
+    loadSortList()
     .then((r) => {
-      const { folder } = r;
+      setFolderList(r.data);
+    }).catch((e) => console.error(e));
 
-      setFolderData((p) => ({
-        ...p,
-        folder,
-      }));
-    })
-    .catch((e) => console.error(e));
-  }, []);
+  },[]);
 
   return (
     <>
         {user ? <Navbar user={user} /> : <Loading />}
-        <Profile folderData={folderData} />
         <Routes>
-          <Route path="/" element={folderData ? <CardList folderData={folderData} /> : <Loading />}></Route>
-          <Route path="/detail/:id" element={<Detail />}></Route>
+          <Route path="/" element={<Shared />} />
+          <Route path="/shared" element={<Shared />} />
+          <Route path="/folder" element={<Folder sortList={folderList} id={id}/>} />
+          <Route path="/detail/:id" element={<Detail />} />
         </Routes>
         <Footer />
     </>

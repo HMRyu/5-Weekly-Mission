@@ -1,17 +1,33 @@
 import '../css/CardList.css'
-import SearchImg from '../img/search.svg';
 import LinkCard from './LinkCard';
 
-function CardList({ folderData }) {
-    const links = folderData.folder.links;
+function CardList({ datas }) {
+    const nextData = datas.map((data) => {
+        const newData = { id: data.id };
+        if (data.created_at) {
+            newData.createdAt = data.created_at;
+        }
+        if (data.createdAt) {
+            newData.createdAt = data.createdAt;
+        }
+        newData.url = data.url;
+        newData.title = data.title;
+        newData.description = data.description;
+        if (data.imageSource) {
+            newData.imageSource = data.imageSource;
+        }
+        if (data.image_source) {
+            newData.imageSource = data.image_source;
+        }
+
+        return newData;
+    })
 
     return (
         <div className='card-container'>
-            <input className="search-bar" type='text' placeholder='링크를 검색해보세요.'></input>
-            <img className='search-bar-image' alt='magnifying glass' src={SearchImg} />
             <div className="card-list">
                 {   
-                    links.map((link) => {
+                    nextData.map((link) => {
                         return (
                             <LinkCard key={link.id} link={link} />
                         )

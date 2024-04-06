@@ -1,5 +1,5 @@
-import profileImg from '../img/profile.svg';
 import "../css/Navbar.css"
+import profileImg from '../img/profile.svg';
 
 function Login({ user }) {
     return ( 
