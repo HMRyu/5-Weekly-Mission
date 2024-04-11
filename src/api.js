@@ -33,3 +33,5 @@ export async function fetchLinkListByFolderId(folderId) {
     const body = await response.json();
     return body;
 }
+
+

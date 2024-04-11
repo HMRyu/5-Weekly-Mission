@@ -7,6 +7,7 @@ function Profile({ folderData }) {
             <div className='profile-name'>@{folderData.folder.owner.name}</div>
             <h1>{folderData.folder.name}</h1>
         </div>
+
     )
 }
 
