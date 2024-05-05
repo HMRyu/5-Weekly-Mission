@@ -1,9 +1,9 @@
 import { useState } from "react";
 import kebabImg from "../images/kebab.svg";
 import noImage from "../images/no-image.svg";
+import Modal from "./Modal";
 import { calculateTimeDiff } from "../utils/calculateTimeDiff";
 import { formatDate } from "../utils/formatDate";
-import Modal from "./Modal";
 
 interface Link {
   id: string;

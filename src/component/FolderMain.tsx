@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserFolders, getUserLinks, getUserLinksById } from "../api/api";
+import { getUserFolders } from "../api/api";
 import Modal from "./Modal";
 import LinkCardListByFolderId from "./LinkCardListByFolderId";
 import shareImg from "../images/share.svg";
@@ -24,10 +24,18 @@ interface Folder {
   favorite?: boolean;
 }
 
-function FolderMain({ user }: { user: UserData | null }) {
+function FolderMain({
+  user,
+  inputValue,
+  links,
+  setFolderId,
+}: {
+  user: UserData | null;
+  inputValue: String;
+  links: any;
+  setFolderId: any;
+}) {
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [folderId, setFolderId] = useState<number>(0);
-  const [links, setLinks] = useState<any>([]);
   const [title, setTitle] = useState<string>("전체");
   const [clickedButton, setClickedButton] = useState<number | null>(0);
   const [modalStates, setModalStates] = useState<{
@@ -54,18 +62,6 @@ function FolderMain({ user }: { user: UserData | null }) {
     return result;
   };
 
-  const getLinksById = (userId: number, folderId: number) => {
-    const result = getUserLinksById(userId, folderId);
-
-    return result;
-  };
-
-  const getAllLinks = (userId: number) => {
-    const result = getUserLinks(userId);
-
-    return result;
-  };
-
   const openModal = (modal: keyof typeof modalStates) => {
     setModalStates({ ...modalStates, [modal]: true });
   };
@@ -75,33 +71,22 @@ function FolderMain({ user }: { user: UserData | null }) {
   };
 
   const handleButtonClick = (folderId: number) => {
-    // Update the state to the ID of the clicked button
     setClickedButton(folderId);
-    // Find the folder object corresponding to the clicked button
     const clickedFolder = folders.find((folder) => folder.id === folderId);
     if (clickedFolder) {
-      // Update folderId and title
       setFolderId(clickedFolder.id);
       setTitle(clickedFolder.name);
     }
   };
 
   const handleAllButtonClick = () => {
-    // Update the state to 0 for the "전체" button
     setClickedButton(0);
-    // Update folderId and title
-    setFolderId(0); // Assuming 0 represents "전체" folder
+    setFolderId(0);
     setTitle("전체");
   };
 
   useEffect(() => {
     if (userId === undefined) return;
-
-    const fetchAllLinks = async () => {
-      const { data } = await getAllLinks(userId);
-
-      setLinks(data.data);
-    };
 
     const fetchUserFoldersData = async () => {
       const { data } = await getFolders(userId);
@@ -109,19 +94,8 @@ function FolderMain({ user }: { user: UserData | null }) {
       setFolders(data.data);
     };
 
-    const fetchLinksByFolderId = async () => {
-      const { data } = await getLinksById(userId, folderId);
-
-      setLinks(data.data);
-    };
-
-    if (folderId === 0) {
-      fetchAllLinks();
-    }
-    // fetchAllLinks();
     fetchUserFoldersData();
-    fetchLinksByFolderId();
-  }, [userId, folderId]);
+  }, [userId]);
 
   return (
     <>
