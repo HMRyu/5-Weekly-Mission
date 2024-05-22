@@ -6,6 +6,7 @@ import { fetcher } from "@/lib/fetcher";
 import axios from "axios";
 import FolderButtons from "./FolderButtons";
 import FolderTitlebar from "./FolderTitlebar";
+import { usePathname } from "next/navigation";
 
 interface UserData {
   id: number;

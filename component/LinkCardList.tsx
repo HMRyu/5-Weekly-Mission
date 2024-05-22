@@ -1,20 +1,22 @@
-import useSampleFolder from "@/hooks/useSampleFolder";
 import LinkCard from "./LinkCard";
 
 interface Link {
   id: string;
-  createdAt: Date;
+  created_at: Date;
   url: string;
   title: string;
   description: string;
-  imageSource: string;
+  image_source: string;
 }
 
-export default function LinkCardList() {
-  const { data } = useSampleFolder();
-
-  const links: Link[] = data?.folder?.links;
-
+export default function LinkCardList({ links }: { links: Link[] }) {
+  if (links?.length === 0) {
+    return (
+      <div className="flex justify-center items-center mt-[50px]">
+        저장된 링크가 없습니다.
+      </div>
+    );
+  }
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 place-items-center mt-[40px] xl:px-[200px] w-full">
       {links?.map((link) => {

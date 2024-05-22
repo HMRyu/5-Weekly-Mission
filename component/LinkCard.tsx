@@ -4,11 +4,11 @@ import { useState } from "react";
 
 interface Link {
   id: string;
-  createdAt: Date;
+  created_at: Date;
   url: string;
   title: string;
   description: string;
-  imageSource: string;
+  image_source: string;
 }
 
 export default function LinkCard({ link }: { link: Link }) {
@@ -22,7 +22,7 @@ export default function LinkCard({ link }: { link: Link }) {
     <div className="w-[300px] h-[300px] m-[50px] shadow-2xl">
       <a href={link.url} target="_blank" rel="noreferrer">
         <img
-          src={link.imageSource ? link.imageSource : "/images/no-image.svg"}
+          src={link.image_source ? link.image_source : "/images/no-image.svg"}
           alt="link"
           className="w-[350px] h-[200px] object-cover rounded-md"
         />
@@ -30,7 +30,7 @@ export default function LinkCard({ link }: { link: Link }) {
       <div className="px-5 py-4">
         <div className="relative flex justify-between">
           <p className="text-[#666] text-[13px]">
-            {calculateTimeDiff(link.createdAt)}
+            {calculateTimeDiff(link.created_at)}
           </p>
           <img
             src="/images/kebab.svg"
@@ -59,7 +59,7 @@ export default function LinkCard({ link }: { link: Link }) {
           {link.description}
         </p>
         <p className="mt-2 text-[#333] text-[14px]">
-          {formatDate(link.createdAt)}
+          {formatDate(link.created_at)}
         </p>
       </div>
     </div>
