@@ -6,7 +6,7 @@ import { fetcher } from "@/lib/fetcher";
 import axios from "axios";
 import FolderButtons from "./FolderButtons";
 import FolderTitlebar from "./FolderTitlebar";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 
 interface UserData {
   id: number;
@@ -42,6 +42,9 @@ export default function FolderMain({
   if (!user) {
     return <div>Loading...</div>;
   }
+
+  const router = useRouter();
+
   const [title, setTitle] = useState<string>("전체");
   const [clickedButton, setClickedButton] = useState<number | null>(0);
   const [folderId, setFolderId] = useState<number>(0);
@@ -87,6 +90,7 @@ export default function FolderMain({
     if (clickedFolder) {
       setFolderId(clickedFolder.id);
       setTitle(clickedFolder.name);
+      router.push(`/folder/${folderId}`);
     }
   };
 
@@ -94,6 +98,7 @@ export default function FolderMain({
     setClickedButton(0);
     setFolderId(0);
     setTitle("전체");
+    router.push("/folder");
   };
 
   const getInputValue = async () => {
@@ -119,6 +124,21 @@ export default function FolderMain({
   useEffect(() => {
     handleFilter();
   }, [inputValue]);
+
+  useEffect(() => {
+    const folderIdFromURL = parseInt(router.query.folderId as string, 10) || 0;
+    setClickedButton(folderIdFromURL);
+    setFolderId(folderIdFromURL);
+
+    if (folderIdFromURL === 0) {
+      setTitle("전체");
+    } else {
+      const clickedFolder = folders?.data?.find(
+        (folder: Folder) => folder.id === folderIdFromURL
+      );
+      setTitle(clickedFolder ? clickedFolder.name : "전체");
+    }
+  }, [router.query.folderId, folders]);
 
   return (
     <>
