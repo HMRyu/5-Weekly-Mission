@@ -3,17 +3,27 @@ import FolderMain from "@/component/FolderMain";
 import Navbar from "@/component/Navbar";
 import Searchbar from "@/component/Searchbar";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { fetchUser } from "@/lib/userFetcher";
 import axios from "axios";
-import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function Page() {
+/** TODO:
+ * 1. access token 없는 경우 signin 페이지로 이동할 때 alert 두 번 뜨는 오류 수정
+ */
+
+interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  profileImageSource: string;
+}
+
+export default function Folder() {
+  const [user, setUser] = useState<UserData | undefined | null>();
   const [inputValue, setInputValue] = useState<string>("");
 
   const router = useRouter();
-
-  const { data: user } = useCurrentUser();
 
   const handleChange = (e: any) => {
     const value = e.target.value;
@@ -34,6 +44,20 @@ export default function Page() {
   const handleClose = () => {
     setInputValue("");
   };
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const { data } = await fetchUser();
+        setUser(data[0]);
+        console.log(data[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getUsers();
+  }, []);
 
   if (!user) {
     return <div>Loading...</div>;

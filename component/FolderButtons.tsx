@@ -39,7 +39,7 @@ export default function FolderButtons({
           전체
         </button>
         {folders &&
-          folders.data.map((folder: Folder) => {
+          folders?.map((folder: Folder) => {
             return (
               <button
                 key={folder.id}

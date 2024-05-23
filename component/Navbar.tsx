@@ -4,7 +4,8 @@ interface UserData {
   id: number;
   name: string;
   email: string;
-  profileImageSource: string;
+  profileImageSource?: string;
+  image_source?: string;
 }
 
 export default function Navbar({ user }: { user: UserData }) {
@@ -16,9 +17,9 @@ export default function Navbar({ user }: { user: UserData }) {
       {user ? (
         <div className="flex">
           <img
-            src="/images/profile.svg"
+            src={user.image_source}
             alt="profile"
-            className="bg-[#6D6AFE] p-2 mr-2 rounded-full"
+            className="w-[28px] h-[28px] mr-2 rounded-full"
           />
           <div>{user.email}</div>
         </div>

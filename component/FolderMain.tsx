@@ -1,12 +1,13 @@
-import useUserFolders from "@/hooks/useUserFolders";
 import { useEffect, useState } from "react";
 import LinkCardListByFolderId from "./LinkCardListByFolderId";
 import useSWR from "swr";
-import { fetcher } from "@/lib/fetcher";
 import axios from "axios";
 import FolderButtons from "./FolderButtons";
 import FolderTitlebar from "./FolderTitlebar";
 import { useRouter } from "next/router";
+import axiosInstance from "@/axios/axiosinstance";
+import { fetchLinks } from "@/lib/linkFetcher";
+import { fetchFolders } from "@/lib/folderFetcher";
 
 interface UserData {
   id: number;
@@ -47,6 +48,7 @@ export default function FolderMain({
 
   const [title, setTitle] = useState<string>("전체");
   const [clickedButton, setClickedButton] = useState<number | null>(0);
+  const [folders, setFolders] = useState<Folder[] | undefined | null>();
   const [folderId, setFolderId] = useState<number>(0);
   const [filteredLinks, setFilteredLinks] = useState<Link[]>([]);
   const [modalStates, setModalStates] = useState<{
@@ -64,14 +66,13 @@ export default function FolderMain({
     addLinkModal: false,
     deleteLinkModal: false,
   });
-
-  const { data: folders } = useUserFolders(user.id);
   const { data: links } = useSWR(
     () =>
       folderId === 0
-        ? `https://bootcamp-api.codeit.kr/api/users/${user.id}/links`
-        : `https://bootcamp-api.codeit.kr/api/users/${user.id}/links?folderId=${folderId}`,
-    fetcher
+        ? `https://bootcamp-api.codeit.kr/api/links`
+        : `https://bootcamp-api.codeit.kr/api/links?folderId=${folderId}`,
+    // fetcher
+    (url) => axiosInstance.get(url).then((res) => res.data)
   );
 
   const openModal = (modal: keyof typeof modalStates) => {
@@ -84,7 +85,7 @@ export default function FolderMain({
 
   const handleButtonClick = (folderId: number) => {
     setClickedButton(folderId);
-    const clickedFolder = folders.data.find(
+    const clickedFolder = folders?.find(
       (folder: Folder) => folder.id === folderId
     );
     if (clickedFolder) {
@@ -110,7 +111,7 @@ export default function FolderMain({
   const handleFilter = async () => {
     if (links) {
       const i = await getInputValue();
-      const nextLinks = links.data.filter(
+      const nextLinks = links?.data?.folder?.filter(
         (link: any) =>
           (link.url && link.url.includes(i)) ||
           (link.title && link.title.includes(i)) ||
@@ -133,12 +134,25 @@ export default function FolderMain({
     if (folderIdFromURL === 0) {
       setTitle("전체");
     } else {
-      const clickedFolder = folders?.data?.find(
+      const clickedFolder = folders?.find(
         (folder: Folder) => folder.id === folderIdFromURL
       );
       setTitle(clickedFolder ? clickedFolder.name : "전체");
     }
   }, [router.query.folderId, folders]);
+
+  useEffect(() => {
+    const fetchFoldersData = async () => {
+      try {
+        const { data } = await fetchFolders();
+        setFolders(data.folder);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFoldersData();
+  }, []);
 
   return (
     <>
@@ -158,7 +172,7 @@ export default function FolderMain({
         modalStates={modalStates}
       />
       <LinkCardListByFolderId
-        links={links?.data}
+        links={links?.data?.folder}
         filteredLinks={filteredLinks}
         inputValue={inputValue}
         modalStates={modalStates}
