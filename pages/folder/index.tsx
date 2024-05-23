@@ -2,15 +2,10 @@ import AddLinkInput from "@/component/AddLinkInput";
 import FolderMain from "@/component/FolderMain";
 import Navbar from "@/component/Navbar";
 import Searchbar from "@/component/Searchbar";
-import useCurrentUser from "@/hooks/useCurrentUser";
 import { fetchUser } from "@/lib/userFetcher";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-
-/** TODO:
- * 1. access token 없는 경우 signin 페이지로 이동할 때 alert 두 번 뜨는 오류 수정
- */
 
 interface UserData {
   id: number;
@@ -58,13 +53,13 @@ export default function Folder() {
     getUsers();
   }, []);
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
-  if (!localStorage.getItem("accessToken")) {
+  if (typeof window !== "undefined" && !localStorage.getItem("accessToken")) {
     alert("로그인이 필요합니다.");
     router.push("/signin");
+  }
+
+  if (!user) {
+    return <div>Loading...</div>;
   }
 
   return (

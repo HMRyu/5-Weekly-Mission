@@ -6,7 +6,6 @@ import FolderButtons from "./FolderButtons";
 import FolderTitlebar from "./FolderTitlebar";
 import { useRouter } from "next/router";
 import axiosInstance from "@/axios/axiosinstance";
-import { fetchLinks } from "@/lib/linkFetcher";
 import { fetchFolders } from "@/lib/folderFetcher";
 
 interface UserData {

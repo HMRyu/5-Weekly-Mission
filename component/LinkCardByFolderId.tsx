@@ -2,6 +2,7 @@ import { calculateTimeDiff } from "@/utils/calculateTimeDiff";
 import { useState } from "react";
 import Modal from "./Modal";
 import { formatDate } from "@/utils/formatDate";
+import Link from "next/link";
 
 interface Link {
   id: string;
@@ -29,15 +30,17 @@ export default function LinkCardByFolderId({
     setShowPopover(!showPopover);
   };
 
+  console.log(link);
+
   return (
     <div className="w-[300px] h-[300px] m-[50px] shadow-2xl">
-      <a href={link.url} target="_blank" rel="noreferrer">
+      <Link href={`https://${link.url}`} target="_blank" rel="noreferrer">
         <img
           src={link.image_source ? link.image_source : "/images/no-image.svg"}
           alt="link"
           className="w-[350px] h-[200px] object-cover rounded-md"
         />
-      </a>
+      </Link>
       <div className="px-5 py-4">
         <div className="relative flex justify-between">
           <p className="text-[#666] text-[13px]">
