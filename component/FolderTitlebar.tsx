@@ -17,7 +17,7 @@ export default function FolderTitlebar({
     <div className="flex items-center justify-between mt-[40px] px-[32px] xl:px-[200px]">
       <div className="text-[30px] font-bold">{title}</div>
       <div className="flex space-x-2">
-        {title !== "전체" ? (
+        {title !== "전체" && (
           <>
             <ShareFolderModal
               openModal={openModal}
@@ -35,7 +35,7 @@ export default function FolderTitlebar({
               modalStates={modalStates}
             />
           </>
-        ) : null}
+        )}
       </div>
     </div>
   );

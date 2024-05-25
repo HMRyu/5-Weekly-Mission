@@ -15,18 +15,18 @@ export default function SocialLogin() {
         <Link href="https://www.google.com">
           <div className="bg-[white] rounded-full cursor-pointer">
             <img
+              className="p-[10px] w-[42px] h-[42px]"
               src="/images/google.png"
               alt="google"
-              className="p-[10px] w-[42px] h-[42px]"
             />
           </div>
         </Link>
         <Link href="https://www.kakaocorp.com/page">
           <div className="bg-[#F5E14B] rounded-full cursor-pointer">
             <img
+              className="p-[10px] w-[42px] h-[42px]"
               src="/images/kakao.svg"
               alt="kakao"
-              className="p-[10px] w-[42px] h-[42px]"
             />
           </div>
         </Link>

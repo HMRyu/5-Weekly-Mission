@@ -89,11 +89,11 @@ export default function SigninForm() {
           className="w-full mt-3 px-[15px] py-[18px] rounded-md"
         />
         <img
-          src={isClosed ? "/images/eye-off.svg" : "/images/eye-one.svg"}
-          alt="eye-off"
           className={`absolute right-3 ${
             errors.password?.message ? "bottom-10" : "bottom-5"
           }`}
+          src={isClosed ? "/images/eye-off.svg" : "/images/eye-one.svg"}
+          alt="eye-off"
           onClick={handleToggleImage}
         />
         <p className="text-[14px] text-[#FF5B56]">{errors.password?.message}</p>

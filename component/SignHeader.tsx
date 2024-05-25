@@ -10,10 +10,10 @@ export default function SignHeader() {
   return (
     <>
       <img
+        className="cursor-pointer"
         src="/images/logo.svg"
         alt="logo"
         width="210px"
-        className="cursor-pointer"
         onClick={() => router.push("/")}
       />
       <div className="flex mt-4">

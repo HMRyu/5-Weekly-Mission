@@ -8,7 +8,16 @@ interface Folder {
   favorite?: boolean;
 }
 
-export default function FolderButtons({
+interface ModalStates {
+  addModal: boolean;
+  shareModal: boolean;
+  editModal: boolean;
+  deleteModal: boolean;
+  addLinkModal: boolean;
+  deleteLinkModal: boolean;
+}
+
+export default function FolderTabs({
   clickedButton,
   handleButtonClick,
   handleAllButtonClick,
@@ -17,13 +26,13 @@ export default function FolderButtons({
   closeModal,
   modalStates,
 }: {
-  clickedButton: any;
-  handleButtonClick: any;
-  handleAllButtonClick: any;
-  folders: any;
-  openModal: any;
-  closeModal: any;
-  modalStates: any;
+  clickedButton: number | null;
+  handleButtonClick: (folderId: number) => void;
+  handleAllButtonClick: () => void;
+  folders: Folder[] | undefined | null;
+  openModal: (modal: keyof ModalStates) => void;
+  closeModal: (modal: keyof ModalStates) => void;
+  modalStates: ModalStates;
 }) {
   return (
     <div className="flex items-center justify-between mt-[40px] px-[32px] xl:px-[200px]">

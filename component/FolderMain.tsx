@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import LinkCardListByFolderId from "./LinkCardListByFolderId";
 import useSWR from "swr";
 import axios from "axios";
-import FolderButtons from "./FolderButtons";
+import FolderTabs from "./FolderTabs";
 import FolderTitlebar from "./FolderTitlebar";
 import { useRouter } from "next/router";
-import axiosInstance from "@/axios/axiosinstance";
+import axiosInstance from "@/axios/axiosInstance";
 import { fetchFolders } from "@/lib/folderFetcher";
 
 interface UserData {
@@ -82,7 +82,7 @@ export default function FolderMain({
     setModalStates({ ...modalStates, [modal]: false });
   };
 
-  const handleButtonClick = (folderId: number) => {
+  const handleButtonClick = (folderId: number): void => {
     setClickedButton(folderId);
     const clickedFolder = folders?.find(
       (folder: Folder) => folder.id === folderId
@@ -155,7 +155,7 @@ export default function FolderMain({
 
   return (
     <>
-      <FolderButtons
+      <FolderTabs
         clickedButton={clickedButton}
         handleButtonClick={handleButtonClick}
         handleAllButtonClick={handleAllButtonClick}
